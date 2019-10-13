@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder/>
+
+    <dubbo:application name="configcenter-nacos-consumer"/>
+
+    <dubbo:registry address="nacos://127.0.0.1:8848"/>
+
+
+    <dubbo:reference id="sysUserService" interface="com.kochun.wxmp.core.service.SysUserService" check="false" version="1.0.0" timeout="6000"/>
+    <dubbo:reference id="roleService" interface="com.kochun.wxmp.core.service.RoleService" check="false" version="1.0.0" timeout="6000"/>
+    <dubbo:reference id="redisService" interface="com.kochun.wxmp.core.service.common.RedisService" check="false" version="1.0.0" timeout="6000"/>
+    <dubbo:reference id="systemModuleService" interface="com.kochun.wxmp.core.service.SystemModuleService" check="false" version="1.0.0" timeout="6000"/>
+
+</beans>

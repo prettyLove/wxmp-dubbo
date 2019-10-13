@@ -1,0 +1,25 @@
+server:
+  port: 8003
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  profiles:
+    active: dev  # dev 开发环境 # test 测试环境 # uat 预发布 # pro 生产环境
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB #单个文件的最大上限
+      max-request-size: 250MB #单个请求的文件总大小上限
+  application:
+    name: wxmp-back
+  banner:
+    location: banner.txt
+  main:
+    banner-mode: log
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+#盐 用于账号加密的
+encryptSalt: F12839WhsnnEV$#23b

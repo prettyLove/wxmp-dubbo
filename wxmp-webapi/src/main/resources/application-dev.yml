@@ -1,0 +1,28 @@
+wx:
+  mp:
+    configs:
+       - appId: wx2b51a90ef63a2af0
+         secret: 4c5d38119be9377a62583dc4f53df570
+         token: cdf7ed76bfc44b12a44a4fae64633deb
+         aesKey:
+logging:
+    config: classpath:logback-spring.xml
+    level:
+      org.springframework.web: INFO
+      com.github.binarywang.demo.wx.mp: DEBUG
+      me.chanjar.weixin: DEBUG
+#dubbo配置
+dubbo:
+  scan:
+    base-packages: com.kochun.wxmp.service
+    # Dubbo Protocol
+  protocol:
+    name : dubbo
+    ## Random port
+    port : -1
+  ## Dubbo Registry
+  registry:
+    address: nacos://${nacos.server-address}:${nacos.port}
+nacos:
+  server-address : 127.0.0.1
+  port : 8848

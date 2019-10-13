@@ -1,0 +1,57 @@
+server:
+    port: 8001
+    servlet:
+        context-path: /
+    tomcat:
+        uri-encoding: utf-8
+spring:
+    profiles:
+        active: dev  # dev 开发环境 # test 测试环境 # uat 预发布 # pro 生产环境
+    application:
+        name: wxmp-back
+    banner:
+        location: banner.txt
+    main:
+        banner-mode: log
+    messages:
+        basename: i18n/messages
+        encoding: UTF-8
+mybatis-plus:
+    mapper-locations: classpath:/mapper/*/*Mapper.xml
+    # MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名 实体扫描，多个package用逗号或者分号分隔
+    type-aliases-package: com.kochun.wxmp.core.entity.*
+    # 该配置请和 typeAliasesPackage 一起使用，如果配置了该属性，则仅仅会扫描路径下以该类作为父类的域对象 。
+    type-aliases-super-type: java.lang.Object
+    configuration:
+        # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+        # 驼峰下划线转换
+        map-underscore-to-camel-case: true
+        # 配置的缓存的全局开关
+        cache-enabled: true
+        # 延时加载的开关
+        lazy-loading-enabled: true
+        # 开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+        multiple-result-sets-enabled: true
+        # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+        call-setters-on-nulls: true
+        use-generated-keys: true
+        default-statement-timeout: 60
+        default-fetch-size: 100
+        auto-mapping-behavior: partial #只对非嵌套的 resultMap 进行自动映射   #Full 对所有的 resultMap 都进行自动映射
+    global-config:
+        db-config:
+            #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+            id-type: AUTO
+            #数据库大写下划线转换
+            #capital-mode: true
+            #逻辑删除配置
+            logic-delete-value: 1
+            logic-not-delete-value: 0
+#盐 用于账号加密的
+encryptSalt: F12839WhsnnEV$#23b
+
+app:
+    jwtExpirationInMs: 604800000
+    jwtSecret: JWTSuperSecretKey
+
