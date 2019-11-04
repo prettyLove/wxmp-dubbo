@@ -20,6 +20,7 @@
         <module>wxmp-webapi</module>
         <module>wxmp-back</module>
         <module>wxmp-service</module>
+        <module>wxmp-generator</module>
     </modules>
 
     <properties>
