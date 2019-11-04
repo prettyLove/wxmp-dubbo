@@ -1,3 +1,6 @@
 /.idea
 /*.iml
-/wxmp-common/target
+out
+gen
+/target/
+.DS_Store
