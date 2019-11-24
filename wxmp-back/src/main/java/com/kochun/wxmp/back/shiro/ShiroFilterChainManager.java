@@ -87,6 +87,8 @@ public class ShiroFilterChainManager {
 //                chainDefinition.addPathDefinition(module, permission);
 //            }
 //        }
+        System.out.println("资源条目："+resourcesList.size());
+
         chainDefinition.addPathDefinition("/user/list","noSessionCreation,authcToken,perms[user:list]");
         chainDefinition.addPathDefinition("/user/view","noSessionCreation,authcToken,perms[user:view]");
 

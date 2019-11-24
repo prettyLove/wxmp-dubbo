@@ -125,7 +125,7 @@ public class LoginController {
             responseResult.setMessage("用户或密码不正确！");
         } catch (Exception e) {
             e.printStackTrace();
-            responseResult.setMessage("系统异常！");
+            responseResult.setMessage(e.getMessage());
         }
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }

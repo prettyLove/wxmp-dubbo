@@ -55,18 +55,25 @@ public class Swagger2Config implements WebMvcConfigurer {
         Parameter parameter = builder
                 // 从cookie中获取token
                 .parameterType("header") //参数类型支持header, cookie, body, query etc
-                .name("accessToken") //参数名
+                .name("Authorization") //参数名
                 .defaultValue("") //默认值
                 .description("请输入token")
                 .modelRef(new ModelRef("string")) //指定参数值的类型
                 .required(false).build(); //非必需，这里是全局配置，然而在登陆的时候是不用验证的
 
-        List<Parameter> pars = new ArrayList<Parameter>();
-//        builder .name("accessToken").description("Token").modelRef(new ModelRef("string")).parameterType("header")
-//                .required(false).build();
+        Parameter parameter_lang = builder
+                //header从中获取Accept-Language
+                //// TODO: 2019/10/8 其实浏览器客户端应该从cookie中拿会常用些，但是前段用VUE，其实打算把语种放到header里面，方便动态控制语种
+                .parameterType("header") //参数类型支持header, cookie, body, query etc
+                .name("Accept-Language") //参数名
+                .defaultValue("zh_CN") //默认值
+                .description("请输入Accept-Language")
+                .modelRef(new ModelRef("string")) //指定参数值的类型
+                .required(false).build(); //非必需，这里是全局配置，然而在登陆的时候是不用验证的
 
-//        pars.add(builder .build());
+        List<Parameter> pars = new ArrayList<Parameter>();
         pars.add(parameter);
+        pars.add(parameter_lang);
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
                 .apis(RequestHandlerSelectors.basePackage("com.kochun.wxmp.back.controller")).paths(PathSelectors.any())
                 .build().globalOperationParameters(pars);

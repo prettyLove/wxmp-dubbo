@@ -102,4 +102,15 @@ public class SysUserController {
         }
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/")
+    public ResponseEntity<?> activated(){
+        ResponseResult responseResult;
+
+        responseResult = ResponseResult.successResponse(localeMessage.getMessage("SUCCESS"));
+
+        return new ResponseEntity<>(responseResult, HttpStatus.OK);
+    }
+
+
 }
