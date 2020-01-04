@@ -1,16 +1,16 @@
 package com.kochun.wxmp.back.shiro;
+
 import com.kochun.wxmp.back.shiro.jwt.JwtToken;
 import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.utils.StringUtil;
 import com.kochun.wxmp.core.entity.system.Role;
 import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemModule;
 import com.kochun.wxmp.core.service.RoleService;
-import com.kochun.wxmp.core.service.SpringContextBeanService;
 import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.SystemModuleService;
 import com.kochun.wxmp.core.service.common.RedisService;
-import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.annotation.Reference;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -21,8 +21,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,16 +31,19 @@ import java.util.List;
  * 基于HMAC（ 散列消息认证码）的控制域
  */
 public class JWTShiroRealm extends AuthorizingRealm {
-	private final Logger log = LoggerFactory.getLogger(JWTShiroRealm.class);
+    private final Logger log = LoggerFactory.getLogger(JWTShiroRealm.class);
 
-	@Resource
+    @Resource
     private SysUserService sysUserService;
 
-	@Resource
+    @Resource
     private RoleService roleService;
 
-	@Resource
+    @Resource
     private RedisService redisService;
+
+    @Resource
+    SystemModuleService systemModuleService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -82,7 +83,7 @@ public class JWTShiroRealm extends AuthorizingRealm {
             String currentTimeMillisRedis = redisService.get(Constant.PREFIX_SHIRO_REFRESH_TOKEN + account).toString();
             // 获取AccessToken时间戳，与RefreshToken的时间戳对比
             if (JwtUtil.getClaim(token, Constant.CURRENT_TIME_MILLIS).equals(currentTimeMillisRedis)) {
-                return new SimpleAuthenticationInfo(token, token, "jwtRealm");
+                return new SimpleAuthenticationInfo(token, token, getName());
             }
         }
         throw new AuthenticationException("Token已过期(Token expired or incorrect.)");
@@ -102,7 +103,7 @@ public class JWTShiroRealm extends AuthorizingRealm {
 //            simpleAuthorizationInfo.addStringPermission(resources.getUrl());
 //        }
         List<Role> roles = roleService.getRoleIdsByUserName(account);
-        if (roles != null){
+        if (roles != null) {
             roles.forEach((Role role) -> {
                 //这里循环把角色编码放进shiro角色里面，因为考虑到Id是lang类型，不匹配，同时Id没有意义
                 simpleAuthorizationInfo.addRole(role.getCode());
@@ -110,12 +111,22 @@ public class JWTShiroRealm extends AuthorizingRealm {
 
         }
 
+        List<SystemModule> resourcesList = systemModuleService.listSystemModulePermissionByUserName(account);
+        resourcesList.forEach(systemModule -> {
+            if (StringUtils.isNotEmpty(systemModule.getPermission())) {
+                String permission = systemModule.getPermission();
+                if (StringUtils.isNotEmpty(permission)) {
+                    simpleAuthorizationInfo.addStringPermission(permission);
+                }
+            }
+        });
 
         //模拟添加url的权限
         //模拟添加url的权限
-        simpleAuthorizationInfo.addStringPermission("user:list");
-        simpleAuthorizationInfo.addStringPermission("user:view");
+        //simpleAuthorizationInfo.addStringPermission("user:list");
+        //simpleAuthorizationInfo.addStringPermission("user:view");
 
+        System.out.println("权限加载完毕=============");
         return simpleAuthorizationInfo;
     }
 }

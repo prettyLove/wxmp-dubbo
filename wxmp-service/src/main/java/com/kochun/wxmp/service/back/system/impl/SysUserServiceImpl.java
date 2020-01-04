@@ -31,13 +31,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Value("${encryptSalt}")
     private String encryptSalt ;
 
-    @Override
-    public List<SysUser> list() {
-        QueryWrapper<SysUser> queryWrapper=new QueryWrapper();
-        queryWrapper.eq("name","admin");
-        return sysUserMapper.selectList(queryWrapper);
-    }
-
     /**
      * @param userName
      * @return SysUser

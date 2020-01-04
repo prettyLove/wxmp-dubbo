@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.service.SysUserService;
 import org.apache.dubbo.config.annotation.Reference;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ public class IndexController {
     }
 
     @PostMapping("/user/list")
+    @RequiresPermissions("user:list")
     public String list(){
 
         List<SysUser> list=sysUserService.list();
@@ -53,6 +55,7 @@ public class IndexController {
     }
 
     @PostMapping("/user/view")
+    @RequiresPermissions("user:view")
     public String view(){
 
         List<SysUser> list=sysUserService.list();

@@ -7,9 +7,11 @@
 
     <context:property-placeholder/>
 
-    <dubbo:application name="configcenter-nacos-consumer"/>
+    <dubbo:application name="wxmp-back-consumer"/>
 
-    <dubbo:registry address="nacos://127.0.0.1:8848"/>
+    <!--<dubbo:registry address="nacos://127.0.0.1:8848"/>-->
+
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
 
     <dubbo:reference id="sysUserService" interface="com.kochun.wxmp.core.service.SysUserService" check="false" version="1.0.0" timeout="6000"/>

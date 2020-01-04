@@ -21,5 +21,3 @@ spring:
   messages:
     basename: i18n/messages
     encoding: UTF-8
-#盐 用于账号加密的
-encryptSalt: F12839WhsnnEV$#23b

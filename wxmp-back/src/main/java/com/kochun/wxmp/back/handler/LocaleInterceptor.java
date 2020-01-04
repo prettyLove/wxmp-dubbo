@@ -19,7 +19,6 @@ import java.util.Locale;
 public class LocaleInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("拦截器---------");
         String lang=request.getHeader("Accept-Language");
         Locale locale = new Locale(lang);
         LocaleContextHolder.setLocale(locale);

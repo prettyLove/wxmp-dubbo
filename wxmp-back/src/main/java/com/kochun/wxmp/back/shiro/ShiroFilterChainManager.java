@@ -1,14 +1,12 @@
 package com.kochun.wxmp.back.shiro;
-import com.kochun.wxmp.core.bo.system.RoleSystemModuleVO;
-import com.kochun.wxmp.core.service.SpringContextBeanService;
+import com.kochun.wxmp.core.entity.system.SystemModule;
+import com.kochun.wxmp.core.vo.system.RoleSystemModuleVO;
 import com.kochun.wxmp.core.service.SystemModuleService;
-import org.apache.dubbo.config.annotation.Reference;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +37,7 @@ public class ShiroFilterChainManager {
         chainDefinition.addPathDefinition("/index", "noSessionCreation,anon");
         chainDefinition.addPathDefinition("/test/**", "noSessionCreation,anon");
         chainDefinition.addPathDefinition("/login", "noSessionCreation,anon");
-        chainDefinition.addPathDefinition("/signin", "noSessionCreation,anon");
+        chainDefinition.addPathDefinition("/logout", "noSessionCreation,anon");
         chainDefinition.addPathDefinition("/signup", "noSessionCreation,anon");
         // swagger-ui
         chainDefinition.addPathDefinition("/swagger-ui.html", "noSessionCreation,anon");
@@ -61,16 +59,16 @@ public class ShiroFilterChainManager {
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         //自定义加载权限资源关系  初始化需要加载所有的需要登陆验证资源
-        List<RoleSystemModuleVO> resourcesList = systemModuleService.listRoleSystemModuleVO();
-//        resourcesList.forEach(roleSystemModuleVO -> {
-//                    if (StringUtils.isNotEmpty(roleSystemModuleVO.getModuleUrl())) {
-//                        String module = roleSystemModuleVO.getModuleUrl();
+//        List<SystemModule> resourcesList = systemModuleService.list();
+//        resourcesList.forEach(systemModule -> {
+//                    if (StringUtils.isNotEmpty(systemModule.getPermission())) {
+//                        String permission = systemModule.getPermission();
 //                        // 排除#
-//                        if (module != null) {
+//                        if (permission != null) {
 //                            // 这里的url 不合规会造成 tomcat 启动失败
-//                            module = module.trim();
-//                            if (module.length() > 2) {
-//                                chainDefinition.addPathDefinition(module, "noSessionCreation,authcToken,pathPermissions");
+//                            permission = permission.trim();
+//                            if (permission.length() > 2) {
+//                                chainDefinition.addPathDefinition(permission, "noSessionCreation,authcToken,pathPermissions");
 //                            }
 //                        }
 //                    }
@@ -87,10 +85,10 @@ public class ShiroFilterChainManager {
 //                chainDefinition.addPathDefinition(module, permission);
 //            }
 //        }
-        System.out.println("资源条目："+resourcesList.size());
+       // System.out.println("资源条目："+resourcesList.size());
 
-        chainDefinition.addPathDefinition("/user/list","noSessionCreation,authcToken,perms[user:list]");
-        chainDefinition.addPathDefinition("/user/view","noSessionCreation,authcToken,perms[user:view]");
+        //chainDefinition.addPathDefinition("/user/list","noSessionCreation,authcToken");
+        //chainDefinition.addPathDefinition("/user/view","noSessionCreation,authcToken");
 
         chainDefinition.addPathDefinition("/**", "noSessionCreation,authcToken");
         return chainDefinition;

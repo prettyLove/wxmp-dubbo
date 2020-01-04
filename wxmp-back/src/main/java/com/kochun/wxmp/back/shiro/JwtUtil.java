@@ -9,6 +9,7 @@ import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.exception.CustomException;
 import com.kochun.wxmp.common.utils.Base64ConvertUtil;
 import com.kochun.wxmp.common.utils.PropertiesUtil;
+import lombok.Data;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import java.util.Date;
  * @date 2018/8/30 11:45
  */
 @Component
+@Data
 public class JwtUtil {
 
     /**
@@ -31,27 +33,39 @@ public class JwtUtil {
      */
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
+    public static String accessTokenExpireTime;
+
+    public static String encryptJWTKey;
+
+
+
+    public static String refreshTokenExpireTime;
     /**
      * 过期时间改为从配置文件获取
      */
-    private static String accessTokenExpireTime;
+    @Value("${system.config.accessTokenExpireTime}")
+    public void setAccessTokenExpireTime(String accessTokenExpireTime) {
+        JwtUtil.accessTokenExpireTime = accessTokenExpireTime;
+    }
 
     /**
      * JWT认证加密私钥(Base64加密)
      */
-    private static String encryptJWTKey;
+    @Value("${system.config.encryptJWTKey}")
+    public void setEncryptJWTKey(String encryptJWTKey) {
+        JwtUtil.encryptJWTKey = encryptJWTKey;
+    }
 
-//    @Value("${accessTokenExpireTime}")
-//    public void setAccessTokenExpireTime(String accessTokenExpireTime) {
-//        //PropertiesUtil.readProperties("config.properties");
-//        //JwtUtil.accessTokenExpireTime = PropertiesUtil.getProperty("accessTokenExpireTime");
-//        JwtUtil.accessTokenExpireTime = accessTokenExpireTime;
-//    }
-//
-//    @Value("${encryptJWTKey}")
-//    public void setEncryptJWTKey(String encryptJWTKey) {
-//        JwtUtil.encryptJWTKey = encryptJWTKey;
-//    }
+    /***
+     * token刷新时间段
+     * @author kochun
+     * @date 2020/1/3 22:11
+     * @return void
+     **/
+    @Value("${system.config.refreshTokenExpireTime}")
+    public void setRefreshTokenExpireTime(String refreshTokenExpireTime) {
+        JwtUtil.refreshTokenExpireTime = refreshTokenExpireTime;
+    }
 
     /**
      * 校验token是否正确
@@ -62,8 +76,8 @@ public class JwtUtil {
      */
     public static boolean verify(String token) {
         try {
-            PropertiesUtil.readProperties("config.properties");
-            JwtUtil.encryptJWTKey = PropertiesUtil.getProperty("encryptJWTKey");
+           // PropertiesUtil.readProperties("config.properties");
+            //JwtUtil.encryptJWTKey = PropertiesUtil.getProperty("encryptJWTKey");
             // 帐号加JWT私钥解密
             String secret = getClaim(token, Constant.ACCOUNT) + Base64ConvertUtil.decode(encryptJWTKey);
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -109,8 +123,8 @@ public class JwtUtil {
     public static String sign(String account, String currentTimeMillis) {
         try {
             PropertiesUtil.readProperties("config.properties");
-            JwtUtil.encryptJWTKey = PropertiesUtil.getProperty("encryptJWTKey");
-            JwtUtil.accessTokenExpireTime = PropertiesUtil.getProperty("accessTokenExpireTime");
+            //JwtUtil.encryptJWTKey = PropertiesUtil.getProperty("encryptJWTKey");
+            //JwtUtil.accessTokenExpireTime = PropertiesUtil.getProperty("accessTokenExpireTime");
             // 帐号加JWT私钥加密
             String secret = account + Base64ConvertUtil.decode(encryptJWTKey);
             // 此处过期时间是以毫秒为单位，所以乘以1000

@@ -12,6 +12,8 @@ import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.SystemConfigService;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
 import org.apache.dubbo.config.annotation.Reference;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -111,6 +113,27 @@ public class SysUserController {
 
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
+
+
+    @GetMapping("/getUserByToken")
+    public ResponseEntity<?> getUserByToken() {
+        Subject subject = SecurityUtils.getSubject();
+        ResponseResult responseResult = ResponseResult.successResponse();
+        if (subject.getPrincipals() != null) {
+            SysUser user = (SysUser) subject.getPrincipals().getPrimaryPrincipal();
+            if (user!=null){
+                responseResult.setData(user);
+            }else {
+                responseResult = ResponseResult.failResponse();
+                responseResult.setMessage("获取用户信息为null");
+            }
+        }else {
+            responseResult = ResponseResult.failResponse();
+            responseResult.setMessage("没有token信息");
+        }
+        return new ResponseEntity<>(responseResult, HttpStatus.OK);
+    }
+
 
 
 }

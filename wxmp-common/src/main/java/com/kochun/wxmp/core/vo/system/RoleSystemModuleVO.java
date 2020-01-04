@@ -1,4 +1,4 @@
-package com.kochun.wxmp.core.bo.system;
+package com.kochun.wxmp.core.vo.system;
 
 import lombok.Data;
 

@@ -33,7 +33,7 @@ public class AesCipherUtil {
 //        AesCipherUtil.encryptAESKey = encryptAESKey;
 //    }
     private static String encryptSalt ;
-    @Value("${encryptSalt}")
+    @Value("${system.config.encryptSalt}")
     public void setEncryptSalt(String value){
         encryptSalt = value;
     }

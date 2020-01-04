@@ -1,32 +1,18 @@
-package com.kochun.wxmp.core.entity.system;
-
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
+package com.kochun.wxmp.core.dto;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author kochun
- * @since 2019-12-25
+ * @date 2018-12-25
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class SystemModule implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class SystemModuleDTO  implements Serializable {
 
     /**
      * ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -84,18 +70,10 @@ public class SystemModule implements Serializable {
      */
     private String componentName;
 
-    /**
-     * 创建日期
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 权限标识
-
-     */
-    private String permission;
 
     private Integer type;
 
+
+    private List<SystemModuleDTO> children;
 
 }

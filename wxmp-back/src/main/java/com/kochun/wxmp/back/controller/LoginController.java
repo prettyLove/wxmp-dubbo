@@ -39,22 +39,21 @@ import java.time.LocalDateTime;
  * @date 2019/8/29 22:10
  **/
 @RestController
-@PropertySource("classpath:config.properties")
 @Api(tags = "登陆", value = "用户登陆退出")
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${refreshTokenExpireTime}")
+    @Value("${system.config.refreshTokenExpireTime}")
     private int refreshTokenExpireTime;
 
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
 
     @Resource
     LocaleMessage localeMessage;
 
-    @Autowired
+    @Resource
     RedisService redisService;
 
 
@@ -63,7 +62,7 @@ public class LoginController {
 
 
     @ApiOperation(value = "用户登陆", notes = "用户名密码必须")
-    @PostMapping(value = "/signin", headers = "Accept=application/json")
+    @PostMapping(value = "/login", headers = "Accept=application/json")
     public ResponseEntity<?> signIn(@RequestBody LoginVo loginVo, HttpServletRequest request, HttpServletResponse response) {
         ResponseResult responseResult;
 
@@ -105,8 +104,13 @@ public class LoginController {
                     // 设置RefreshToken，时间戳为当前时间戳，直接设置即可(不用先删后设，会覆盖已有的RefreshToken)
                     String currentTimeMillis = String.valueOf(System.currentTimeMillis());
                     redisService.set(Constant.PREFIX_SHIRO_REFRESH_TOKEN + loginVo.getUsername(), currentTimeMillis, refreshTokenExpireTime);
+
                     // 从Header中Authorization返回AccessToken，时间戳为当前时间戳
                     String token = JwtUtil.sign(loginVo.getUsername(), currentTimeMillis);
+
+                    //使用token作为key,保存用户信息,保存时间为token刷新时间
+                    redisService.set(token,user,refreshTokenExpireTime);
+
                     response.setHeader("Authorization", token);
                     response.setHeader("Access-Control-Expose-Headers", "Authorization");
                     responseResult = ResponseResult.successResponse("sign success");
@@ -130,12 +134,13 @@ public class LoginController {
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
 
-    @GetMapping("/signup")
-    public ResponseEntity<?> signUp() {
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipals() != null) {
-            SysUser user = (SysUser) subject.getPrincipals().getPrimaryPrincipal();
+            String token = (String) subject.getPrincipals().getPrimaryPrincipal();
             //// TODO: 2019/8/29  是否将用户信息存到redis中，目前没有
+            SysUser user = (SysUser) redisService.get(token);
             sysUserService.deleteLoginInfo(user.getName());
         }
         SecurityUtils.getSubject().logout();

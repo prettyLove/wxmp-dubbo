@@ -68,7 +68,7 @@ public class ShiroConfig {
 
         Map<String, Filter> filterMap = factoryBean.getFilters();
         filterMap.put("authcToken", createAuthFilter());
-        filterMap.put("perms", createURLPermissionsFilter());
+        //filterMap.put("perms", createURLPermissionsFilter());
 
         factoryBean.setFilters(filterMap);
 
@@ -135,10 +135,10 @@ public class ShiroConfig {
         return new JwtAuthFilter();
     }
 
-
-    @Bean("URLPermissionsFilter")
-    protected URLPermissionsFilter createURLPermissionsFilter( ){
-        return new URLPermissionsFilter();
-    }
+//
+//    @Bean("URLPermissionsFilter")
+//    protected URLPermissionsFilter createURLPermissionsFilter( ){
+//        return new URLPermissionsFilter();
+//    }
 
 }

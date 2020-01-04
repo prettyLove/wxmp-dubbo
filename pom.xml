@@ -24,11 +24,13 @@
     </modules>
 
     <properties>
-        <sping-boot.version>2.1.6.RELEASE</sping-boot.version>
+        <sping-boot.version>2.1.9.RELEASE</sping-boot.version>
         <shiro-spring.version>1.4.0</shiro-spring.version>
         <shiro-redis.version>2.4.2.1-RELEASE</shiro-redis.version>
         <jwt.version>3.4.0</jwt.version>
         <jedis.version>2.9.0</jedis.version>
+        <dubbo.version>2.7.3</dubbo.version>
+        <!--<nacos.version>1.1.1</nacos.version>-->
     </properties>
 
     <dependencies>

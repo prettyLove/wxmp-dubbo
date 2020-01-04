@@ -3,8 +3,11 @@ package com.kochun.wxmp.back.shiro.cache;
 import com.kochun.wxmp.back.shiro.JwtUtil;
 import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.utils.PropertiesUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
@@ -20,10 +23,14 @@ import java.util.concurrent.TimeUnit;
  * @author 丶doufu
  * @date 2019/08/03
  */
+@Slf4j
 public class CustomCache<K, V> implements Cache<K, V> {
 
 
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private Environment environment;
 
     public CustomCache(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -59,9 +66,10 @@ public class CustomCache<K, V> implements Cache<K, V> {
         // 读取配置文件，获取Redis的Shiro缓存过期时间
         PropertiesUtil.readProperties("config.properties");
         String shiroCacheExpireTime = PropertiesUtil.getProperty("shiroCacheExpireTime");
+        log.info("cache time "+ shiroCacheExpireTime);
         // 设置Redis的Shiro缓存
         try {
-            redisTemplate.opsForValue().set(this.getKey(key), value, Integer.parseInt(shiroCacheExpireTime), TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(this.getKey(key), value, Integer.valueOf(shiroCacheExpireTime), TimeUnit.SECONDS);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

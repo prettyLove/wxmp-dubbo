@@ -1,7 +1,9 @@
 package com.kochun.wxmp.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kochun.wxmp.core.bo.system.RoleSystemModuleVO;
+import com.kochun.wxmp.core.dto.SystemModuleDTO;
+import com.kochun.wxmp.core.vo.system.MenuVo;
+import com.kochun.wxmp.core.vo.system.RoleSystemModuleVO;
 import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
 
@@ -22,26 +24,41 @@ public interface SystemModuleService extends IService<SystemModule> {
      * @author kochun
      * @description //TODO
      * @date 2019/8/20 10:55
-     * @param user
+     * @param userId
      * @return java.util.List<SystemModule>
      **/
-    List<SystemModule> getSystemModuleListByUserId(SysUser user);
+    List<SystemModule> listSystemModuleByUserId(Long userId);
 
 
 
     /***
-     * 获取每个角色拥有的systemModule,用于角色权限判断
+     * // 将数据条目转换成树的层级对象
      * @author kochun
-     * @date 2019/9/12 22:40
-     * @param
-     * @return java.util.List<com.kochun.wxmp.core.bo.system.RoleSystemModuleVO>
+     * @date 2019/12/27 8:51
+     * @param list
+     * @return java.util.List<com.kochun.wxmp.core.dto.SystemModuleDTO>
      **/
-    List<RoleSystemModuleVO> listRoleSystemModuleVO();
+    List<SystemModuleDTO> parseMenuTree(List<SystemModule> list);
+
+    /***
+     *  用于构建VUE前端左边菜单
+     * @author kochun
+     * @date 2019/12/27 8:22
+     * @param systemModuleDTOS
+     * @return java.util.List<com.kochun.wxmp.core.vo.system.MenuVo>
+     **/
+    List<MenuVo> buildMenus(List<SystemModuleDTO> systemModuleDTOS);
 
 
 
-
-
+    /**
+     * @author kochun
+     * @description //TODO
+     * @date 2019/8/20 10:55
+     * @param userName
+     * @return java.util.List<SystemModule>
+     **/
+    List<SystemModule> listSystemModulePermissionByUserName(String userName);
 
 
 }
