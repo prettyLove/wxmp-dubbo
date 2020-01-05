@@ -135,11 +135,11 @@ public class SystemModuleServiceImpl extends ServiceImpl<SystemModuleMapper, Sys
                         MenuVo menuVo = new MenuVo();
                         menuVo.setName(StringUtils.isNotEmpty(menuDTO.getComponentName()) ? menuDTO.getComponentName() : menuDTO.getName());
                         // 一级目录需要加斜杠，不然会报警告
-                        menuVo.setPath(menuDTO.getPid() == 0 ? "/" + menuDTO.getPath() : menuDTO.getPath());
+                        menuVo.setPath(menuDTO.getPid() == -1 ? "/" + menuDTO.getPath() : menuDTO.getPath());
                         menuVo.setHidden(menuDTO.getHidden());
                         // 如果不是外链
                         if (!menuDTO.getIFrame()) {
-                            if (menuDTO.getPid() == 0) {
+                            if (menuDTO.getPid() == -1) {
                                 menuVo.setComponent(StringUtils.isEmpty(menuDTO.getComponent()) ? "Layout" : menuDTO.getComponent());
                             } else if (!StringUtils.isEmpty(menuDTO.getComponent())) {
                                 menuVo.setComponent(menuDTO.getComponent());

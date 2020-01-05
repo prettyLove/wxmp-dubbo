@@ -58,7 +58,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
          * salt = redisTemplate.opsForValue().get("token:"+username);
          */
         SysUser user = getUserByUserName(username);
-        user.setSalt(encryptSalt);
         return user;
     }
 

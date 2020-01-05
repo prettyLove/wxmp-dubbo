@@ -10,6 +10,7 @@ import com.kochun.wxmp.core.service.EmailService;
 import com.kochun.wxmp.core.service.EmailTemplateService;
 import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.SystemConfigService;
+import com.kochun.wxmp.core.service.common.RedisService;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.SecurityUtils;
@@ -44,6 +45,10 @@ public class SysUserController {
 
     @Reference(version = "1.0.0")
     private EmailService emailService;
+
+    @Reference(version = "1.0.0")
+    private RedisService redisService;
+
 
     @Resource
     private LocaleMessage localeMessage;
@@ -120,7 +125,9 @@ public class SysUserController {
         Subject subject = SecurityUtils.getSubject();
         ResponseResult responseResult = ResponseResult.successResponse();
         if (subject.getPrincipals() != null) {
-            SysUser user = (SysUser) subject.getPrincipals().getPrimaryPrincipal();
+            String token = (String) subject.getPrincipals().getPrimaryPrincipal();
+            //// TODO: 2019/8/29  是否将用户信息存到redis中，目前没有
+            SysUser user = (SysUser) redisService.get(token);
             if (user!=null){
                 responseResult.setData(user);
             }else {

@@ -38,8 +38,8 @@ import java.time.LocalDateTime;
  * @author kochun
  * @date 2019/8/29 22:10
  **/
-@RestController
 @Api(tags = "登陆", value = "用户登陆退出")
+@RestController
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -62,7 +62,7 @@ public class LoginController {
 
 
     @ApiOperation(value = "用户登陆", notes = "用户名密码必须")
-    @PostMapping(value = "/login", headers = "Accept=application/json")
+    @PostMapping(value = "/login")
     public ResponseEntity<?> signIn(@RequestBody LoginVo loginVo, HttpServletRequest request, HttpServletResponse response) {
         ResponseResult responseResult;
 
@@ -114,7 +114,7 @@ public class LoginController {
                     response.setHeader("Authorization", token);
                     response.setHeader("Access-Control-Expose-Headers", "Authorization");
                     responseResult = ResponseResult.successResponse("sign success");
-                    JwtAuthenticationResponse authenticationResponse = new JwtAuthenticationResponse(token, refreshTokenExpireTime);
+                    JwtAuthenticationResponse authenticationResponse = new JwtAuthenticationResponse(token, refreshTokenExpireTime,user);
                     responseResult.setData(authenticationResponse);
 
                 } else {

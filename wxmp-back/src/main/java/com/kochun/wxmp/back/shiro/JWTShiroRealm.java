@@ -58,6 +58,7 @@ public class JWTShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         System.out.println("验证token==========  判断用户是否正确");
         String token = (String) authenticationToken.getCredentials();
+        System.out.println("当前token:    "+token);
         // 解密获得account，用于和数据库进行对比
         String account = JwtUtil.getClaim(token, Constant.ACCOUNT);
         // 帐号为空

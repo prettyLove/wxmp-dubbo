@@ -2,9 +2,13 @@ package com.kochun.wxmp.back.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemModule;
 import com.kochun.wxmp.core.service.SysUserService;
+import com.kochun.wxmp.core.service.SystemModuleService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,14 +27,17 @@ public class IndexController {
     @Reference(version = "1.0.0")
     SysUserService sysUserService;
 
-    @GetMapping("/getUserList")
-    public String getUserList(){
+    @Reference(version = "1.0.0")
+    SystemModuleService systemModuleService;
 
-        List<SysUser> list=sysUserService.list();
+    @GetMapping("/getSystemModule")
+    public ResponseEntity<?> getUserList(){
+
+        List<SystemModule> list=systemModuleService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 
-        return "111";
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping("/test")

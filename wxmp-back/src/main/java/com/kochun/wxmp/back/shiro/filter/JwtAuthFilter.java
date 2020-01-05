@@ -10,6 +10,7 @@ import com.kochun.wxmp.common.utils.JsonConvertUtil;
 import com.kochun.wxmp.common.utils.PropertiesUtil;
 import com.kochun.wxmp.core.service.common.RedisService;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
@@ -54,6 +55,8 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
         if (this.isLoginAttempt(request, response)) {
             try {
                 System.out.println("JwtFilter 进入========");
+                String urlPath=WebUtils.getPathWithinApplication(WebUtils.toHttp(request));
+                System.out.println("当前请求路径：  "+urlPath);
                 // 进行Shiro的登录UserRealm
                 this.executeLogin(request, response);
             } catch (Exception e) {
@@ -118,7 +121,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         // 拿到当前Header中Authorization的AccessToken(Shiro中getAuthzHeader方法已经实现)
         String token = this.getAuthzHeader(request);
-        return token != null;
+        return StringUtils.isNotEmpty(token);
     }
 
     /**
