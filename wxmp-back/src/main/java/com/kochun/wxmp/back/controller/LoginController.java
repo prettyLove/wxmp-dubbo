@@ -5,6 +5,7 @@ import com.kochun.wxmp.back.shiro.AesCipherUtil;
 import com.kochun.wxmp.back.shiro.JwtUtil;
 import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.exception.CustomUnauthorizedException;
+import com.kochun.wxmp.core.dto.SysUserDTO;
 import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
@@ -20,6 +21,7 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -109,6 +111,8 @@ public class LoginController {
                     String token = JwtUtil.sign(loginVo.getUsername(), currentTimeMillis);
 
                     //使用token作为key,保存用户信息,保存时间为token刷新时间
+                   // SysUserDTO sysUserDTO=new SysUserDTO();
+                    //BeanUtils.copyProperties(user,sysUserDTO);
                     redisService.set(token,user,refreshTokenExpireTime);
 
                     response.setHeader("Authorization", token);
