@@ -8,6 +8,8 @@ import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.exception.CustomException;
 import com.kochun.wxmp.common.utils.JsonConvertUtil;
 import com.kochun.wxmp.common.utils.PropertiesUtil;
+import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +17,7 @@ import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -39,6 +42,12 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
 
     @Resource
     RedisService redisService;
+
+    @Value("${system.config.refreshTokenExpireTime}")
+    private int refreshTokenExpireTime;
+
+    @Resource
+    private SysUserService sysUserService;
 
     /**
      * 这里我们详细说明下为什么最终返回的都是true，即允许访问
@@ -185,7 +194,12 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
                 // 最后将刷新的AccessToken存放在Response的Header中的Authorization字段返回
                 HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
                 httpServletResponse.setHeader("Authorization", token);
+                httpServletResponse.setHeader("refreshToken","true");
                 httpServletResponse.setHeader("Access-Control-Expose-Headers", "Authorization");
+
+                SysUser user=sysUserService.getUserByUserName(account);
+                redisService.set(token,user,refreshTokenExpireTime);
+
                 logger.info("刷新当前请求token===================  :"+token);
                 return true;
             }

@@ -5,6 +5,7 @@ import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
 import com.kochun.wxmp.core.service.SystemModuleService;
 import com.kochun.wxmp.core.service.common.RedisService;
+import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
 import com.kochun.wxmp.core.vo.system.MenuVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +41,8 @@ public class MenuController {
 
     @ApiOperation("获取前端所需菜单")
     @GetMapping(value = "/build")
-    public ResponseEntity buildMenus(){
+    public ResponseEntity<?> buildMenus(){
+        ResponseResult responseResult;
         List<MenuVo> menuVoList=new ArrayList<>();
         Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipals() != null) {
@@ -49,8 +51,12 @@ public class MenuController {
             List<SystemModule> systemModules = systemModuleService.listSystemModuleByUserId(user.getId());
             List<SystemModuleDTO> systemModuleDTOS=systemModuleService.parseMenuTree(systemModules);
             menuVoList = systemModuleService.buildMenus(systemModuleDTOS);
+            responseResult = ResponseResult.successResponse("sign success");
+            responseResult.setData(menuVoList);
+        }else {
+            responseResult = ResponseResult.failResponse("获取菜单失败");
         }
-        return new ResponseEntity<>(menuVoList, HttpStatus.OK);
+        return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
 
 

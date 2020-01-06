@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -121,7 +122,7 @@ public class SysUserController {
 
 
     @GetMapping("/getUserByToken")
-    public ResponseEntity<?> getUserByToken() {
+    public ResponseEntity<?> getUserByToken(HttpServletResponse response) {
         Subject subject = SecurityUtils.getSubject();
         ResponseResult responseResult = ResponseResult.successResponse();
         if (subject.getPrincipals() != null) {
@@ -131,8 +132,16 @@ public class SysUserController {
             if (user!=null){
                 responseResult.setData(user);
             }else {
-                responseResult = ResponseResult.failResponse();
-                responseResult.setMessage("获取用户信息为null");
+                String flag=response.getHeader("refreshToken");
+                System.out.println("获得用户信息：flag ========="+flag);
+                if ("true".equals(flag)){
+                    responseResult = ResponseResult.failResponse();
+                    responseResult.setData("refreshToken");
+                    responseResult.setMessage("刷新token异常错误");
+                }else {
+                    responseResult = ResponseResult.failResponse();
+                    responseResult.setMessage("获取用户信息为null");
+                }
             }
         }else {
             responseResult = ResponseResult.failResponse();

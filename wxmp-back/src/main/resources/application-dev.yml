@@ -18,13 +18,13 @@ spring:
 wx:
   mp:
     configs:
-       - appId: wx2b51a90ef63a2af0
-         secret: 4c5d38119be9377a62583dc4f53df570
-         token: cdf7ed76bfc44b12a44a4fae64633deb
-         aesKey:
+      - appId: wx2b51a90ef63a2af0
+        secret: 4c5d38119be9377a62583dc4f53df570
+        token: cdf7ed76bfc44b12a44a4fae64633deb
+        aesKey:
 
 logging:
-    config: classpath:logback-spring.xml
+  config: classpath:logback-spring.xml
 system:
   config:
     #盐 用于账号加密的
@@ -34,7 +34,7 @@ system:
     # JWT认证加密私钥(Base64加密)
     encryptJWTKey: U0JBUElKV1RkV2FuZzkyNjQ1NA==
     # AccessToken过期时间-5分钟-5*60(秒为单位)
-    accessTokenExpireTime: 300
+    accessTokenExpireTime: 60
     # RefreshToken过期时间-30分钟-30*60(秒为单位)
     refreshTokenExpireTime: 1800
 

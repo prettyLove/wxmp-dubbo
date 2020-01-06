@@ -1,9 +1,8 @@
-package com.kochun.wxmp.core.entity.system;
-
-import java.io.Serializable;
+package com.kochun.wxmp.core.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -14,7 +13,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author kochun
- * @since 2019-08-26
+ * @since 2020-01-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
