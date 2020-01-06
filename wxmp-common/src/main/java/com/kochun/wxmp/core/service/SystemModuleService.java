@@ -3,8 +3,6 @@ package com.kochun.wxmp.core.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.kochun.wxmp.core.dto.SystemModuleDTO;
 import com.kochun.wxmp.core.vo.system.MenuVo;
-import com.kochun.wxmp.core.vo.system.RoleSystemModuleVO;
-import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
 
 import java.util.List;

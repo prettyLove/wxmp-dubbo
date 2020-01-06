@@ -5,8 +5,8 @@ import com.kochun.wxmp.back.shiro.AesCipherUtil;
 import com.kochun.wxmp.back.shiro.JwtUtil;
 import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.exception.CustomUnauthorizedException;
-import com.kochun.wxmp.core.entity.system.SysUser;
-import com.kochun.wxmp.core.service.SysUserService;
+import com.kochun.wxmp.core.entity.system.SystemUser;
+import com.kochun.wxmp.core.service.SystemUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
 import com.kochun.wxmp.core.vo.internal.request.LoginVo;
 import com.kochun.wxmp.core.vo.internal.response.JwtAuthenticationResponse;
@@ -45,7 +45,7 @@ public class LoginController {
     private int refreshTokenExpireTime;
 
     @Resource
-    private SysUserService sysUserService;
+    private SystemUserService systemUserService;
 
     @Resource
     LocaleMessage localeMessage;
@@ -70,24 +70,24 @@ public class LoginController {
         }
         responseResult = ResponseResult.failResponse("error");
 
-        SysUser user = sysUserService.getUserByUserName(loginVo.getUsername());
+        SystemUser user = systemUserService.getUserByUserName(loginVo.getUsername());
 
         try {
 
             if (user != null) {
-                if (user.getStatus() == SysUser.STATUS_REGISTER) {
+                if (user.getStatus() == SystemUser.STATUS_REGISTER) {
                     responseResult.setMessage("用户未激活");
                     return new ResponseEntity<>(responseResult, HttpStatus.OK);
                 }
-                if (user.getStatus() == SysUser.STATUS_DISABLE) {
+                if (user.getStatus() == SystemUser.STATUS_DISABLE) {
                     if (LocalDateTime.now().compareTo(user.getBanTime()) < 0) {
                         responseResult.setMessage("用户被禁用");
                         return new ResponseEntity<>(responseResult, HttpStatus.OK);
                     } else {
 
-                        SysUser liftUser = sysUserService.getById(user.getId());
-                        liftUser.setStatus(SysUser.STATUS_NORMAL);
-                        sysUserService.updateById(liftUser);
+                        SystemUser liftUser = systemUserService.getById(user.getId());
+                        liftUser.setStatus(SystemUser.STATUS_NORMAL);
+                        systemUserService.updateById(liftUser);
                     }
                 }
                 // 密码进行AES解密
@@ -139,8 +139,8 @@ public class LoginController {
         if (subject.getPrincipals() != null) {
             String token = (String) subject.getPrincipals().getPrimaryPrincipal();
             //// TODO: 2019/8/29  是否将用户信息存到redis中，目前没有
-            SysUser user = (SysUser) redisService.get(token);
-            sysUserService.deleteLoginInfo(user.getName());
+            SystemUser user = (SystemUser) redisService.get(token);
+            systemUserService.deleteLoginInfo(user.getName());
         }
         SecurityUtils.getSubject().logout();
         ResponseResult responseResult = ResponseResult.successResponse();

@@ -4,12 +4,12 @@ import com.kochun.wxmp.back.il8n.LocaleMessage;
 import com.kochun.wxmp.back.shiro.PasswordHelper;
 import com.kochun.wxmp.common.utils.UUIDUtil;
 import com.kochun.wxmp.core.entity.system.EmailTemplate;
-import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemConfig;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 import com.kochun.wxmp.core.service.EmailService;
 import com.kochun.wxmp.core.service.EmailTemplateService;
-import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.SystemConfigService;
+import com.kochun.wxmp.core.service.SystemUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
 import org.apache.dubbo.config.annotation.Reference;
@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SysUserController {
 
     @Reference(version = "1.0.0")
-    private SysUserService sysUserService;
+    private SystemUserService systemUserService;
 
     @Reference(version = "1.0.0")
     private EmailTemplateService emailTemplateService;
@@ -59,18 +59,18 @@ public class SysUserController {
      * @return
      */
     @PostMapping(value = "/register")
-    public ResponseEntity<?> register(@Validated @RequestBody SysUser entity){
+    public ResponseEntity<?> register(@Validated @RequestBody SystemUser entity){
         ResponseResult responseResult;
-        SysUser userByName = sysUserService.getUserByUserName(entity.getName());
-        SysUser userByEmail = sysUserService.findUserByEmail(entity.getEmail());
-        SysUser userByPhone = sysUserService.findUserByPhone(entity.getPhone());
+        SystemUser userByName = systemUserService.getUserByUserName(entity.getName());
+        SystemUser userByEmail = systemUserService.findUserByEmail(entity.getEmail());
+        SystemUser userByPhone = systemUserService.findUserByPhone(entity.getPhone());
         if (null == userByName) {
             if (null == userByEmail) {
                 if (null == userByPhone) {
                     //密码MD5加密
                     entity.setPassword(PasswordHelper.encryptPassword(null, entity.getPassword()));
                     String validateCode = PasswordHelper.encryptPassword(null, UUIDUtil.getUUID());
-                    int result = sysUserService.register(entity);
+                    int result = systemUserService.register(entity);
                     if (result > 0) {
                         EmailTemplate emailTemplate = emailTemplateService.getByOperation("USER_ACTIVE");
                         SystemConfig host = systemConfigService.getByKey("USER_ACTIVE_HOST");
@@ -102,7 +102,7 @@ public class SysUserController {
     @PatchMapping(value = "/activated")
     public ResponseEntity<?> activated(String validateCode){
         ResponseResult responseResult;
-        int result = sysUserService.activated(validateCode);
+        int result = systemUserService.activated(validateCode);
         if (result > 0) {
             responseResult = ResponseResult.successResponse(localeMessage.getMessage("SUCCESS"));
         } else {
@@ -128,7 +128,7 @@ public class SysUserController {
         if (subject.getPrincipals() != null) {
             String token = (String) subject.getPrincipals().getPrimaryPrincipal();
             //// TODO: 2019/8/29  是否将用户信息存到redis中，目前没有
-            SysUser user = (SysUser) redisService.get(token);
+            SystemUser user = (SystemUser) redisService.get(token);
             if (user!=null){
                 responseResult.setData(user);
             }else {

@@ -1,7 +1,7 @@
 package com.kochun.wxmp.mapper.system;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemUserRole;
 
 /**
  * <p>
@@ -9,9 +9,9 @@ import com.kochun.wxmp.core.entity.system.SysUser;
  * </p>
  *
  * @author kochun
- * @since 2019-08-09
+ * @since 2019-08-22
  */
-public interface SysUserMapper extends BaseMapper<SysUser> {
+public interface SystemUserRoleMapper extends BaseMapper<SystemUserRole> {
 
 
 }

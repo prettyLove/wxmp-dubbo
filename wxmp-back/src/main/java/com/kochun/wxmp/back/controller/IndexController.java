@@ -1,10 +1,10 @@
 package com.kochun.wxmp.back.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
-import com.kochun.wxmp.core.service.SysUserService;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 import com.kochun.wxmp.core.service.SystemModuleService;
+import com.kochun.wxmp.core.service.SystemUserService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import java.util.List;
 public class IndexController {
 
     @Reference(version = "1.0.0")
-    SysUserService sysUserService;
+    SystemUserService sysUserService;
 
     @Reference(version = "1.0.0")
     SystemModuleService systemModuleService;
@@ -43,7 +43,7 @@ public class IndexController {
     @PostMapping("/test")
     public String test(){
 
-        List<SysUser> list=sysUserService.list();
+        List<SystemUser> list=sysUserService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 
@@ -54,7 +54,7 @@ public class IndexController {
     @RequiresPermissions("user:list")
     public String list(){
 
-        List<SysUser> list=sysUserService.list();
+        List<SystemUser> list=sysUserService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 
@@ -65,7 +65,7 @@ public class IndexController {
     @RequiresPermissions("user:view")
     public String view(){
 
-        List<SysUser> list=sysUserService.list();
+        List<SystemUser> list=sysUserService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 

@@ -1,7 +1,7 @@
 package com.kochun.wxmp.mapper.system;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kochun.wxmp.core.entity.system.RolePermission;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 
 /**
  * <p>
@@ -9,8 +9,9 @@ import com.kochun.wxmp.core.entity.system.RolePermission;
  * </p>
  *
  * @author kochun
- * @since 2019-08-22
+ * @since 2019-08-09
  */
-public interface RolePermissionMapper extends BaseMapper<RolePermission> {
+public interface SystemUserMapper extends BaseMapper<SystemUser> {
+
 
 }

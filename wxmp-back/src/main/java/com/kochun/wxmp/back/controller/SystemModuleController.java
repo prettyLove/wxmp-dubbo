@@ -2,7 +2,7 @@ package com.kochun.wxmp.back.controller;
 
 
 import com.kochun.wxmp.core.dto.SystemModuleDTO;
-import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
 import com.kochun.wxmp.core.service.SystemModuleService;
 import com.kochun.wxmp.core.service.common.RedisService;
@@ -47,7 +47,7 @@ public class SystemModuleController {
         Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipals() != null) {
             String token = (String) subject.getPrincipals().getPrimaryPrincipal();
-            SysUser user= (SysUser) redisService.get(token);
+            SystemUser user= (SystemUser) redisService.get(token);
             List<SystemModule> systemModules = systemModuleService.listSystemModuleByUserId(user.getId());
             List<SystemModuleDTO> systemModuleDTOS=systemModuleService.parseMenuTree(systemModules);
             menuVoList = systemModuleService.buildMenus(systemModuleDTOS);

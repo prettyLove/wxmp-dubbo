@@ -1,6 +1,6 @@
 package com.kochun.wxmp.back.shiro;
 
-import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class PasswordHelper {
 		encryptSalt = value;
 	}
 
-	public static SysUser encryptPassword(SysUser user) {
+	public static SystemUser encryptPassword(SystemUser user) {
 		String newPassword = new SimpleHash(algorithmName, user.getPassword(),  ByteSource.Util.bytes(encryptSalt), hashIterations).toHex();
 		user.setPassword(newPassword);
 		return user;

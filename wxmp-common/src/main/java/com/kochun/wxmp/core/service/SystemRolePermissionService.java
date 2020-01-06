@@ -1,6 +1,5 @@
 package com.kochun.wxmp.core.service;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kochun.wxmp.core.entity.system.RolePermission;
 
 /**
  * <p>

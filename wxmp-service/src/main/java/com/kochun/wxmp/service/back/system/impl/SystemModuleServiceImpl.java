@@ -3,16 +3,16 @@ package com.kochun.wxmp.service.back.system.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kochun.wxmp.core.dto.SystemModuleDTO;
+import com.kochun.wxmp.core.entity.system.SystemUser;
+import com.kochun.wxmp.core.entity.system.SystemUserRole;
 import com.kochun.wxmp.core.vo.system.MenuMetaVo;
 import com.kochun.wxmp.core.vo.system.MenuVo;
-import com.kochun.wxmp.core.entity.system.SysUser;
-import com.kochun.wxmp.core.entity.system.SysUserRole;
 import com.kochun.wxmp.core.entity.system.SystemModule;
 import com.kochun.wxmp.core.service.SystemModuleService;
-import com.kochun.wxmp.mapper.system.RoleMapper;
-import com.kochun.wxmp.mapper.system.SysUserMapper;
-import com.kochun.wxmp.mapper.system.SysUserRoleMapper;
 import com.kochun.wxmp.mapper.system.SystemModuleMapper;
+import com.kochun.wxmp.mapper.system.SystemRoleMapper;
+import com.kochun.wxmp.mapper.system.SystemUserMapper;
+import com.kochun.wxmp.mapper.system.SystemUserRoleMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
@@ -31,16 +31,16 @@ import java.util.*;
 @Service(version = "1.0.0")
 public class SystemModuleServiceImpl extends ServiceImpl<SystemModuleMapper, SystemModule> implements SystemModuleService {
     @Resource
-    RoleMapper roleMapper;
+    SystemRoleMapper roleMapper;
 
     @Resource
     SystemModuleMapper systemModuleMapper;
 
     @Resource
-    SysUserRoleMapper sysUserRoleMapper;
+    SystemUserRoleMapper sysUserRoleMapper;
 
     @Resource
-    SysUserMapper sysUserMapper;
+    SystemUserMapper sysUserMapper;
 
     /**
      * @param userId
@@ -51,17 +51,17 @@ public class SystemModuleServiceImpl extends ServiceImpl<SystemModuleMapper, Sys
      **/
     @Override
     public List<SystemModule> listSystemModuleByUserId(Long userId) {
-        SysUser user= sysUserMapper.selectById(userId);
+        SystemUser user= sysUserMapper.selectById(userId);
         // 初始删除用户
-        if (user.getDeleted()) {
+        if (user.getIsDeleted()) {
             return new ArrayList<>();
         }
-        List<SysUserRole> roleList = sysUserRoleMapper.selectList(null);
+        List<SystemUserRole> roleList = sysUserRoleMapper.selectList(null);
         //角色问题
         if (roleList == null || roleList.size() == 0) {
             return new ArrayList<>();
         }
-        if (user.getSupered()) {
+        if (user.getIsSuper()) {
             // 超级权限
             return systemModuleMapper.selectList(null);
         } else {
@@ -186,12 +186,12 @@ public class SystemModuleServiceImpl extends ServiceImpl<SystemModuleMapper, Sys
     @Override
     public List<SystemModule> listSystemModulePermissionByUserName(String userName) {
         List<SystemModule> result=new ArrayList<>();
-        QueryWrapper<SysUser> queryWrapper=new QueryWrapper();
+        QueryWrapper<SystemUser> queryWrapper=new QueryWrapper();
         queryWrapper.eq("name",userName);
-        List<SysUser> list=sysUserMapper.selectList(queryWrapper);
+        List<SystemUser> list=sysUserMapper.selectList(queryWrapper);
         if (list!=null&&list.size()>0){
-            SysUser sysUser=list.get(0);
-            if (sysUser.getSupered()){
+            SystemUser sysUser=list.get(0);
+            if (sysUser.getIsSuper()){
                 QueryWrapper<SystemModule> wrapper=new QueryWrapper();
                 //wrapper.eq("type",2);
                 result = systemModuleMapper.selectList(wrapper);

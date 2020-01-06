@@ -7,9 +7,8 @@ import com.kochun.wxmp.back.shiro.jwt.JwtToken;
 import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.exception.CustomException;
 import com.kochun.wxmp.common.utils.JsonConvertUtil;
-import com.kochun.wxmp.common.utils.PropertiesUtil;
-import com.kochun.wxmp.core.entity.system.SysUser;
-import com.kochun.wxmp.core.service.SysUserService;
+import com.kochun.wxmp.core.entity.system.SystemUser;
+import com.kochun.wxmp.core.service.SystemUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +46,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
     private int refreshTokenExpireTime;
 
     @Resource
-    private SysUserService sysUserService;
+    private SystemUserService systemUserService;
 
     /**
      * 这里我们详细说明下为什么最终返回的都是true，即允许访问
@@ -197,7 +196,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
                 httpServletResponse.setHeader("refreshToken","true");
                 httpServletResponse.setHeader("Access-Control-Expose-Headers", "Authorization");
 
-                SysUser user=sysUserService.getUserByUserName(account);
+                SystemUser user=systemUserService.getUserByUserName(account);
                 redisService.set(token,user,refreshTokenExpireTime);
 
                 logger.info("刷新当前请求token===================  :"+token);

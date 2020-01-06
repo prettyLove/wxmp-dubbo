@@ -2,16 +2,15 @@ package com.kochun.wxmp.service.back.system.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.kochun.wxmp.core.entity.system.SysUser;
-import com.kochun.wxmp.core.service.SysUserService;
-import com.kochun.wxmp.mapper.system.SysUserMapper;
+import com.kochun.wxmp.core.entity.system.SystemUser;
+import com.kochun.wxmp.core.service.SystemUserService;
+import com.kochun.wxmp.mapper.system.SystemUserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * <p>
@@ -22,11 +21,11 @@ import java.util.List;
  * @since 2019-08-09
  */
 @Service(version = "1.0.0")
-public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemUser> implements SystemUserService {
 
 
     @Resource
-    SysUserMapper sysUserMapper;
+    SystemUserMapper sysUserMapper;
 
     @Value("${encryptSalt}")
     private String encryptSalt ;
@@ -39,8 +38,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @date 2019/8/20 10:17
      **/
     @Override
-    public SysUser getUserByUserName(String userName) {
-        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+    public SystemUser getUserByUserName(String userName) {
+        QueryWrapper<SystemUser> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("name",userName);
         return sysUserMapper.selectOne(queryWrapper);
     }
@@ -52,12 +51,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return
      */
     @Override
-    public SysUser getJwtTokenInfo(String username) {
+    public SystemUser getJwtTokenInfo(String username) {
         /**
          * @todo 从数据库或者缓存中取出jwt token生成时用的salt
          * salt = redisTemplate.opsForValue().get("token:"+username);
          */
-        SysUser user = getUserByUserName(username);
+        SystemUser user = getUserByUserName(username);
         return user;
     }
 
@@ -70,9 +69,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @date 2019/8/25 22:20
      **/
     @Override
-    public SysUser findUserByEmail(String email) {
+    public SystemUser findUserByEmail(String email) {
         if (StringUtils.isNotEmpty(email)){
-            QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+            QueryWrapper<SystemUser> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("email",email);
             return sysUserMapper.selectOne(queryWrapper);
         }
@@ -87,9 +86,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @date 2019/8/25 22:20
      **/
     @Override
-    public SysUser findUserByPhone(String phone) {
+    public SystemUser findUserByPhone(String phone) {
         if (StringUtils.isNotEmpty(phone)){
-            QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+            QueryWrapper<SystemUser> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("phone",phone);
             return sysUserMapper.selectOne(queryWrapper);
         }
@@ -104,10 +103,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return int
      **/
     @Override
-    public int register(SysUser user) {
+    public int register(SystemUser user) {
         user.setStatus(0);
         user.setGmtCreate(LocalDateTime.now());
-        user.setDeleted(false);
+        user.setIsDeleted(false);
         return sysUserMapper.insert(user);
     }
 
@@ -121,9 +120,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      **/
     @Override
     public int activated(String validateCode) {
-        QueryWrapper<SysUser> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<SystemUser> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("validate_code",validateCode);
-        SysUser sysUser=sysUserMapper.selectOne(queryWrapper);
+        SystemUser sysUser=sysUserMapper.selectOne(queryWrapper);
         if (sysUser!=null){
             //激动 状态为1
             sysUser.setStatus(1);

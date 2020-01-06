@@ -87,7 +87,7 @@ public interface RedisService {
      * 递增
      *
      * @param key 键
-     * @param by  要增加几(大于0)
+     * @param delta  要增加几(大于0)
      * @return
      */
     long incr(String key, long delta);
@@ -96,7 +96,7 @@ public interface RedisService {
      * 递减
      *
      * @param key 键
-     * @param by  要减少几(小于0)
+     * @param delta  要减少几(小于0)
      * @return
      */
     long decr(String key, long delta);
@@ -285,7 +285,6 @@ public interface RedisService {
      *
      * @param key   键
      * @param value 值
-     * @param time  时间(秒)
      * @return
      */
     boolean lSet(String key, Object value);
@@ -305,7 +304,6 @@ public interface RedisService {
      *
      * @param key   键
      * @param value 值
-     * @param time  时间(秒)
      * @return
      */
     boolean lSet(String key, List<Object> value);

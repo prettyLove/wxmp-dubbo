@@ -1,7 +1,7 @@
 package com.kochun.wxmp.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kochun.wxmp.core.entity.system.Role;
+import com.kochun.wxmp.core.entity.system.SystemRole;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @author kochun
  * @since 2019-08-18
  */
-public interface SystemRoleService extends IService<Role> {
+public interface SystemRoleService extends IService<SystemRole> {
 
     /**
      * @author kochun
@@ -22,7 +22,7 @@ public interface SystemRoleService extends IService<Role> {
      * @param userId
      * @return java.util.List<Role>
      **/
-    List<Role> getRoleIdsByUserId(long userId);
+    List<SystemRole> getRoleIdsByUserId(long userId);
 
 
     /**
@@ -32,5 +32,5 @@ public interface SystemRoleService extends IService<Role> {
      * @param userName
      * @return java.util.List<Role>
      **/
-    List<Role> getRoleIdsByUserName(String userName);
+    List<SystemRole> getRoleIdsByUserName(String userName);
 }

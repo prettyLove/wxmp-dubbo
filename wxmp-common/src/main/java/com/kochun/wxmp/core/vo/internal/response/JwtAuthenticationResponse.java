@@ -1,14 +1,14 @@
 package com.kochun.wxmp.core.vo.internal.response;
 
-import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 
 public class JwtAuthenticationResponse {
     private String accessToken;
     private String tokenType = "Bearer";
     private Integer expiredTimeInMs;
-    private SysUser user;
+    private SystemUser user;
 
-    public JwtAuthenticationResponse(String accessToken, Integer expiredTimeInMs,SysUser user) {
+    public JwtAuthenticationResponse(String accessToken, Integer expiredTimeInMs,SystemUser user) {
     	this.expiredTimeInMs = expiredTimeInMs;
         this.accessToken = accessToken;
         this.user= user;

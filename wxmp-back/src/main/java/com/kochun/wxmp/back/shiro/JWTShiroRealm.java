@@ -3,12 +3,12 @@ package com.kochun.wxmp.back.shiro;
 import com.kochun.wxmp.back.shiro.jwt.JwtToken;
 import com.kochun.wxmp.common.Constant;
 import com.kochun.wxmp.common.utils.StringUtil;
-import com.kochun.wxmp.core.entity.system.Role;
-import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
-import com.kochun.wxmp.core.service.RoleService;
-import com.kochun.wxmp.core.service.SysUserService;
+import com.kochun.wxmp.core.entity.system.SystemRole;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 import com.kochun.wxmp.core.service.SystemModuleService;
+import com.kochun.wxmp.core.service.SystemRoleService;
+import com.kochun.wxmp.core.service.SystemUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -34,10 +34,10 @@ public class JWTShiroRealm extends AuthorizingRealm {
     private final Logger log = LoggerFactory.getLogger(JWTShiroRealm.class);
 
     @Resource
-    private SysUserService sysUserService;
+    private SystemUserService systemUserService;
 
     @Resource
-    private RoleService roleService;
+    private SystemRoleService systemRoleService;
 
     @Resource
     private RedisService redisService;
@@ -73,7 +73,7 @@ public class JWTShiroRealm extends AuthorizingRealm {
 //        }
 
         // 查询用户是否存在
-        SysUser sysUser = sysUserService.getJwtTokenInfo(account);
+        SystemUser sysUser = systemUserService.getJwtTokenInfo(account);
 
         if (sysUser == null) {
             throw new AuthenticationException("该帐号不存在(The account does not exist.)");
@@ -103,9 +103,9 @@ public class JWTShiroRealm extends AuthorizingRealm {
 //        for(SystemModule resources: resourcesList){
 //            simpleAuthorizationInfo.addStringPermission(resources.getUrl());
 //        }
-        List<Role> roles = roleService.getRoleIdsByUserName(account);
+        List<SystemRole> roles = systemRoleService.getRoleIdsByUserName(account);
         if (roles != null) {
-            roles.forEach((Role role) -> {
+            roles.forEach((SystemRole role) -> {
                 //这里循环把角色编码放进shiro角色里面，因为考虑到Id是lang类型，不匹配，同时Id没有意义
                 simpleAuthorizationInfo.addRole(role.getCode());
             });

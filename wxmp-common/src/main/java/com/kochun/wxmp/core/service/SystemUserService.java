@@ -1,6 +1,6 @@
 package com.kochun.wxmp.core.service;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kochun.wxmp.core.entity.system.SysUser;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import com.kochun.wxmp.core.entity.system.SysUser;
  * @author kochun
  * @since 2019-08-09
  */
-public interface SystemUserService extends IService<SysUser> {
+public interface SystemUserService extends IService<SystemUser> {
 
 
     /**
@@ -20,10 +20,10 @@ public interface SystemUserService extends IService<SysUser> {
      * @param userName
      * @return SysUser
      **/
-    SysUser getUserByUserName(String userName);
+    SystemUser getUserByUserName(String userName);
 
 
-    SysUser getJwtTokenInfo(String username);
+    SystemUser getJwtTokenInfo(String username);
 
 
 
@@ -35,7 +35,7 @@ public interface SystemUserService extends IService<SysUser> {
      * @param email
      * @return SysUser
      **/
-    SysUser findUserByEmail(String email);
+    SystemUser findUserByEmail(String email);
 
     /**
      * 根据手机号查询用户
@@ -44,7 +44,7 @@ public interface SystemUserService extends IService<SysUser> {
      * @param phone
      * @return SysUser
      **/
-    SysUser findUserByPhone(String phone);
+    SystemUser findUserByPhone(String phone);
 
 
     /**
@@ -54,7 +54,7 @@ public interface SystemUserService extends IService<SysUser> {
      * @param user
      * @return int
      **/
-    int register(SysUser user);
+    int register(SystemUser user);
 
 
     /**

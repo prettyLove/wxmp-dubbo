@@ -7,8 +7,6 @@ package com.kochun.wxmp.back.controller;/**
  **/
 import com.kochun.wxmp.core.entity.system.SystemConfig;
 import com.kochun.wxmp.core.service.EmailService;
-import com.kochun.wxmp.core.service.RoleService;
-import com.kochun.wxmp.core.service.SysUserService;
 import com.kochun.wxmp.core.service.SystemModuleService;
 import com.kochun.wxmp.core.service.common.RedisService;
 import org.apache.dubbo.config.annotation.Reference;

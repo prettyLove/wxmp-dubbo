@@ -1,8 +1,8 @@
 package com.kochun.wxmp.service.back.system.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.kochun.wxmp.core.entity.system.Role;
-import com.kochun.wxmp.core.service.RoleService;
-import com.kochun.wxmp.mapper.system.RoleMapper;
+import com.kochun.wxmp.core.entity.system.SystemRole;
+import com.kochun.wxmp.core.service.SystemRoleService;
+import com.kochun.wxmp.mapper.system.SystemRoleMapper;
 import org.apache.dubbo.config.annotation.Service;
 
 import javax.annotation.Resource;
@@ -17,10 +17,10 @@ import java.util.List;
  * @since 2019-08-18
  */
 @Service(version = "1.0.0")
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+public class SystemRoleServiceImpl extends ServiceImpl<SystemRoleMapper, SystemRole> implements SystemRoleService {
 
     @Resource
-    RoleMapper roleMapper;
+    SystemRoleMapper roleMapper;
 
     /**
      * @author kochun
@@ -30,7 +30,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @return java.util.List<Role>
      **/
     @Override
-    public List<Role> getRoleIdsByUserId(long userId) {
+    public List<SystemRole> getRoleIdsByUserId(long userId) {
         return roleMapper.getRoleIdsByUserId(userId);
     }
 
@@ -42,7 +42,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @date 2019/8/22 13:46
      **/
     @Override
-    public List<Role> getRoleIdsByUserName(String userName) {
+    public List<SystemRole> getRoleIdsByUserName(String userName) {
         return roleMapper.getRoleIdsByUserName(userName);
     }
 
