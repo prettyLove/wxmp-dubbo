@@ -1,6 +1,7 @@
 package com.kochun.wxmp.core.service;
+
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kochun.wxmp.core.entity.system.RolePermission;
+import com.kochun.wxmp.core.entity.system.SysUserRole;
 
 /**
  * <p>
@@ -10,6 +11,8 @@ import com.kochun.wxmp.core.entity.system.RolePermission;
  * @author kochun
  * @since 2019-08-22
  */
-public interface RolePermissionService extends IService<RolePermission> {
+public interface SystemRoleService extends IService<SysUserRole> {
+
+
 
 }

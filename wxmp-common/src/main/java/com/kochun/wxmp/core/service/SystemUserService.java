@@ -10,7 +10,7 @@ import com.kochun.wxmp.core.entity.system.SysUser;
  * @author kochun
  * @since 2019-08-09
  */
-public interface SysUserService extends IService<SysUser> {
+public interface SystemUserService extends IService<SysUser> {
 
 
     /**

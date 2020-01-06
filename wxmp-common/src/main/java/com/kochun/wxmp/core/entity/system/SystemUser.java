@@ -1,4 +1,4 @@
-package com.kochun.wxmp.core.entity;
+package com.kochun.wxmp.core.entity.system;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
