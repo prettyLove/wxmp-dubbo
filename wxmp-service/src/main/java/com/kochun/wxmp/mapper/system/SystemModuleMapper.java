@@ -23,7 +23,7 @@ public interface SystemModuleMapper extends BaseMapper<SystemModule> {
      * @param userId
      * @return
      */
-    @Select("SELECT * FROM system_module where id IN(SELECT module_id from role_permission WHERE role_id IN(SELECT role_id FROM sys_user_role WHERE  user_id=#{agr0}))")
+    @Select("SELECT * FROM system_module where id IN(SELECT module_id from system_role_permission WHERE role_id IN(SELECT role_id FROM system_user_role WHERE  user_id=#{agr0}))")
     List<SystemModule> listSystemModuleListByUserId(long userId);
 
 

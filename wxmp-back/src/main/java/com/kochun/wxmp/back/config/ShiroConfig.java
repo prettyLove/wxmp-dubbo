@@ -76,6 +76,7 @@ public class ShiroConfig {
         factoryBean.setLoginUrl("/login");
         // 登录成功后要跳转的链接
         factoryBean.setSuccessUrl("/index");
+
         //未授权界面
         factoryBean.setUnauthorizedUrl("/401");
         factoryBean.setFilterChainDefinitionMap(shiroFilterChainManager.shiroFilterChainDefinition().getFilterChainMap());

@@ -36,6 +36,6 @@ system:
     # AccessToken过期时间-5分钟-5*60(秒为单位)
     accessTokenExpireTime: 60
     # RefreshToken过期时间-30分钟-30*60(秒为单位)
-    refreshTokenExpireTime: 1800
+    refreshTokenExpireTime: 120
 
 

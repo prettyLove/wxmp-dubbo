@@ -25,7 +25,7 @@ import java.util.List;
 public class IndexController {
 
     @Reference(version = "1.0.0")
-    SystemUserService sysUserService;
+    SystemUserService systemUserService;
 
     @Reference(version = "1.0.0")
     SystemModuleService systemModuleService;
@@ -43,7 +43,7 @@ public class IndexController {
     @PostMapping("/test")
     public String test(){
 
-        List<SystemUser> list=sysUserService.list();
+        List<SystemUser> list=systemUserService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 
@@ -54,7 +54,7 @@ public class IndexController {
     @RequiresPermissions("user:list")
     public String list(){
 
-        List<SystemUser> list=sysUserService.list();
+        List<SystemUser> list=systemUserService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 
@@ -65,7 +65,7 @@ public class IndexController {
     @RequiresPermissions("user:view")
     public String view(){
 
-        List<SystemUser> list=sysUserService.list();
+        List<SystemUser> list=systemUserService.list();
 
         System.out.println(JSONArray.toJSONString(list));
 

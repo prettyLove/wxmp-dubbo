@@ -1,7 +1,14 @@
 package com.kochun.wxmp.back.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kochun.wxmp.back.il8n.LocaleMessage;
+import com.kochun.wxmp.back.shiro.AesCipherUtil;
+import com.kochun.wxmp.back.shiro.JwtUtil;
 import com.kochun.wxmp.back.shiro.PasswordHelper;
+import com.kochun.wxmp.common.Constant;
+import com.kochun.wxmp.common.exception.CustomUnauthorizedException;
 import com.kochun.wxmp.common.utils.UUIDUtil;
 import com.kochun.wxmp.core.entity.system.EmailTemplate;
 import com.kochun.wxmp.core.entity.system.SystemConfig;
@@ -11,9 +18,15 @@ import com.kochun.wxmp.core.service.EmailTemplateService;
 import com.kochun.wxmp.core.service.SystemConfigService;
 import com.kochun.wxmp.core.service.SystemUserService;
 import com.kochun.wxmp.core.service.common.RedisService;
+import com.kochun.wxmp.core.vo.internal.request.LoginVo;
+import com.kochun.wxmp.core.vo.internal.response.JwtAuthenticationResponse;
 import com.kochun.wxmp.core.vo.internal.response.ResponseResult;
+import io.swagger.annotations.ApiOperation;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +34,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -41,8 +56,8 @@ public class SysUserController {
     @Reference(version = "1.0.0")
     private EmailTemplateService emailTemplateService;
 
-    @Reference(version = "1.0.0")
-    private SystemConfigService systemConfigService;
+//    @Reference(version = "1.0.0")
+//    private SystemConfigService systemConfigService;
 
     @Reference(version = "1.0.0")
     private EmailService emailService;
@@ -73,9 +88,12 @@ public class SysUserController {
                     int result = systemUserService.register(entity);
                     if (result > 0) {
                         EmailTemplate emailTemplate = emailTemplateService.getByOperation("USER_ACTIVE");
-                        SystemConfig host = systemConfigService.getByKey("USER_ACTIVE_HOST");
-                        String url = host.getVarValue() + "?validateCode=" + validateCode;
-                        String href = emailTemplate.getContent().replace("_url_", url);
+                        //SystemConfig host = systemConfigService.getByKey("USER_ACTIVE_HOST");
+//                        String url = host.getVarValue() + "?validateCode=" + validateCode;
+//                        String href = emailTemplate.getContent().replace("_url_", url);
+                        String url = "";
+                        String href = "";
+
                         emailService.sendEmail(entity.getEmail(), href, emailTemplate.getSubject());
                         responseResult = ResponseResult.successResponse(localeMessage.getMessage("REGISTER_SUCCESS"));
                     } else {
@@ -112,11 +130,12 @@ public class SysUserController {
     }
 
     @GetMapping(value = "/")
-    public ResponseEntity<?> activated(){
+    @RequiresPermissions("user:list")
+    public ResponseEntity<?> get(Integer pageNumber,Integer pageSize,SystemUser user){
         ResponseResult responseResult;
-
         responseResult = ResponseResult.successResponse(localeMessage.getMessage("SUCCESS"));
 
+         responseResult.setData(systemUserService.list(pageNumber,pageSize,user));
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
 
@@ -149,6 +168,7 @@ public class SysUserController {
         }
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
+
 
 
 

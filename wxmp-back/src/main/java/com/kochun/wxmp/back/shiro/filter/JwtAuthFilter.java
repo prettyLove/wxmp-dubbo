@@ -91,6 +91,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
                 }
                 // Token认证失败直接返回Response信息
                 this.response401(response, msg);
+
                 return false;
             }
         } else {
@@ -112,13 +113,18 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
     }
 
     /**
+     * 这个方法当token失效后悔进入，
      * 这里我们详细说明下为什么重写
      * 可以对比父类方法，只是将executeLogin方法调用去除了
      * 如果没有去除将会循环调用doGetAuthenticationInfo方法
      */
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        this.sendChallenge(request, response);
+
+        System.out.println("token过期时进入。。。。。。。。。。。。");
+
+        //response401(response,"token已过期");
+        // this.sendChallenge(request, response);
         return false;
     }
 
@@ -153,7 +159,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
         HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE,PATCH");
         httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
         // 跨域时会首先发送一个OPTIONS请求，这里我们给OPTIONS请求直接返回正常状态
         if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
@@ -210,8 +216,41 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
      * 无需转发，直接返回Response信息
      */
     private void response401(ServletResponse response, String msg) {
+
+        System.out.println("response401。。。。。。。。。。。。");
         HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
+
+        httpServletResponse.setHeader("Access-control-Allow-Origin", "*");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers","*");
+
         httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json; charset=utf-8");
+        try (PrintWriter out = httpServletResponse.getWriter()) {
+            String data = JsonConvertUtil.objectToJson(ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):" + msg, null));
+            out.append(data);
+        } catch (IOException e) {
+            logger.error("直接返回Response信息出现IOException异常:" + e.getMessage());
+            throw new CustomException("直接返回Response信息出现IOException异常:" + e.getMessage());
+        }
+    }
+
+
+    /**
+     * 403	Forbidden	服务器理解请求客户端的请求，但是拒绝执行此请求
+     * 无需转发，直接返回Response信息
+     */
+    private void response403(ServletResponse response, String msg) {
+
+        System.out.println("response403。。。。。。。。。。。。");
+        HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
+
+        httpServletResponse.setHeader("Access-control-Allow-Origin", "*");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers","*");
+
+        httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");
         try (PrintWriter out = httpServletResponse.getWriter()) {

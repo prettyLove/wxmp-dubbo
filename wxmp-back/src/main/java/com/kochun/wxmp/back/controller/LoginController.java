@@ -55,9 +55,6 @@ public class LoginController {
 
 
     // api 参数说明
-    // (@ApiParam(name="id",value="用户id",required=true) String username)
-
-
     @ApiOperation(value = "用户登陆", notes = "用户名密码必须")
     @PostMapping(value = "/login")
     public ResponseEntity<?> signIn(@RequestBody LoginVo loginVo, HttpServletRequest request, HttpServletResponse response) {
@@ -106,7 +103,7 @@ public class LoginController {
                     String token = JwtUtil.sign(loginVo.getUsername(), currentTimeMillis);
 
                     //使用token作为key,保存用户信息,保存时间为token刷新时间
-                   // SysUserDTO sysUserDTO=new SysUserDTO();
+                    // SysUserDTO sysUserDTO=new SysUserDTO();
                     //BeanUtils.copyProperties(user,sysUserDTO);
                     redisService.set(token,user,refreshTokenExpireTime);
 
@@ -133,8 +130,11 @@ public class LoginController {
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
 
+
     @GetMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        System.out.println("用户退出=========");
+        //String token =request.getHeader("Authorization");
         Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipals() != null) {
             String token = (String) subject.getPrincipals().getPrimaryPrincipal();
@@ -142,8 +142,10 @@ public class LoginController {
             SystemUser user = (SystemUser) redisService.get(token);
             systemUserService.deleteLoginInfo(user.getName());
         }
+        //redisService.del(token);
         SecurityUtils.getSubject().logout();
         ResponseResult responseResult = ResponseResult.successResponse();
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
+
 }

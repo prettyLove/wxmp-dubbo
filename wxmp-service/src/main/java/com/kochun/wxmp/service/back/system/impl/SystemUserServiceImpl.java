@@ -1,6 +1,8 @@
 package com.kochun.wxmp.service.back.system.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kochun.wxmp.core.entity.system.SystemUser;
 import com.kochun.wxmp.core.service.SystemUserService;
@@ -142,5 +144,19 @@ public class SystemUserServiceImpl extends ServiceImpl<SystemUserMapper, SystemU
          * redisTemplate.delete("token:"+username);
          */
 
+    }
+
+    @Override
+    public IPage<SystemUser> list(Integer pageNumber, Integer pageSize, SystemUser systemUser) {
+        QueryWrapper queryWrapper=new QueryWrapper();
+        if (pageNumber!=null&&pageSize!=null){
+            IPage<SystemUser> iPage=new Page<>(pageNumber,pageSize) ;
+            iPage=sysUserMapper.selectPage(iPage,queryWrapper);
+            return  iPage;
+        }else {
+            IPage<SystemUser> iPage=new Page<>(0,0);
+            iPage.setRecords(sysUserMapper.selectList(queryWrapper));
+            return  iPage;
+        }
     }
 }

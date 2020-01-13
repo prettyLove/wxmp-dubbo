@@ -21,11 +21,11 @@ import javax.annotation.Resource;
  **/
 @Slf4j
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurationSupport {
+public class CorsConfig extends WebMvcConfig {
 
 
-    @Resource
-    private LocaleInterceptor localeInterceptor;
+   // @Resource
+   // private LocaleInterceptor localeInterceptor;
 
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -49,14 +49,15 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeInterceptor)
-                .addPathPatterns("/**");
+        //registry.addInterceptor(localeInterceptor)
+          //      .addPathPatterns("/**");
+
         registry.addInterceptor(new CrossInterceptor()).addPathPatterns("/**");
-        log.debug("跨域拦截器注册成功！");
+        log.info("跨域拦截器注册成功！");
 
 
         registry.addInterceptor(new OptionsInterceptor()).addPathPatterns("/**");
-        log.debug("Options请求拦截器注册成功！");
+        log.info("Options请求拦截器注册成功！");
     }
 
 

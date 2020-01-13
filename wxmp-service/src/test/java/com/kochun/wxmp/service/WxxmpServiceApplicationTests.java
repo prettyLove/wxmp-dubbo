@@ -2,8 +2,8 @@ package com.kochun.wxmp.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.kochun.wxmp.core.dto.SystemModuleDTO;
-import com.kochun.wxmp.core.entity.system.SysUser;
 import com.kochun.wxmp.core.entity.system.SystemModule;
+import com.kochun.wxmp.core.entity.system.SystemUser;
 import com.kochun.wxmp.core.service.SystemModuleService;
 import com.kochun.wxmp.core.vo.system.MenuVo;
 import org.junit.Test;
@@ -24,10 +24,10 @@ public class WxxmpServiceApplicationTests {
     @Test
     public void contextLoads() {
 
-        SysUser sysUser=new SysUser();
+        SystemUser sysUser=new SystemUser();
         sysUser.setId(2L);
-        sysUser.setSupered(true);
-        sysUser.setDeleted(false);
+        sysUser.setIsSuper(true);
+        sysUser.setIsDeleted(false);
         List<SystemModule>  list= systemModuleService.listSystemModuleByUserId(sysUser.getId());
         System.out.println(list.size());
 

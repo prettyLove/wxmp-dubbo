@@ -1,4 +1,5 @@
 package com.kochun.wxmp.core.service;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.kochun.wxmp.core.entity.system.SystemUser;
 
@@ -69,4 +70,7 @@ public interface SystemUserService extends IService<SystemUser> {
 
 
     void deleteLoginInfo(String username);
+
+
+    IPage<SystemUser> list(Integer pageNumber,Integer pageSize,SystemUser systemUser);
 }

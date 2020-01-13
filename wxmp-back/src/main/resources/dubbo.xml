@@ -14,8 +14,8 @@
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
 
-    <dubbo:reference id="sysUserService" interface="com.kochun.wxmp.core.service.SysUserService" check="false" version="1.0.0" timeout="6000"/>
-    <dubbo:reference id="roleService" interface="com.kochun.wxmp.core.service.RoleService" check="false" version="1.0.0" timeout="6000"/>
+    <dubbo:reference id="systemUserService" interface="com.kochun.wxmp.core.service.SystemUserService" check="false" version="1.0.0" timeout="6000"/>
+    <dubbo:reference id="systemRoleService" interface="com.kochun.wxmp.core.service.SystemRoleService" check="false" version="1.0.0" timeout="6000"/>
     <dubbo:reference id="redisService" interface="com.kochun.wxmp.core.service.common.RedisService" check="false" version="1.0.0" timeout="6000"/>
     <dubbo:reference id="systemModuleService" interface="com.kochun.wxmp.core.service.SystemModuleService" check="false" version="1.0.0" timeout="6000"/>
 

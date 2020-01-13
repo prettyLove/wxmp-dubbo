@@ -17,11 +17,11 @@ import java.util.List;
 public interface SystemRoleMapper extends BaseMapper<SystemRole> {
 
 
-    @Select("SELECT * FROM role r,system_user_role sur WHERE sur.user_id=#{agr0} and sur.role_id=r.id")
+    @Select("SELECT * FROM system_role r,system_user_role sur WHERE sur.user_id=#{agr0} and sur.role_id=r.id")
     List<SystemRole> getRoleIdsByUserId(long userId);
 
 
-    @Select("SELECT * FROM role r,system_user_role sur,system_user su WHERE su.name=#{agr0} and su.id=sur.user_id and sur.role_id=r.id")
+    @Select("SELECT * FROM system_role r,system_user_role sur,system_user su WHERE su.name=#{agr0} and su.id=sur.user_id and sur.role_id=r.id")
     List<SystemRole> getRoleIdsByUserName(String userName);
 
 }

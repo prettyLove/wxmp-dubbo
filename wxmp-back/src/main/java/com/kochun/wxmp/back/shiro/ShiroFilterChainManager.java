@@ -38,6 +38,7 @@ public class ShiroFilterChainManager {
         chainDefinition.addPathDefinition("/test/**", "noSessionCreation,anon");
         chainDefinition.addPathDefinition("/login", "noSessionCreation,anon");
         chainDefinition.addPathDefinition("/logout", "noSessionCreation,anon");
+        chainDefinition.addPathDefinition("/sysUser/logout", "noSessionCreation,anon");
         chainDefinition.addPathDefinition("/signup", "noSessionCreation,anon");
         // swagger-ui
         chainDefinition.addPathDefinition("/swagger-ui.html", "noSessionCreation,anon");
@@ -90,7 +91,7 @@ public class ShiroFilterChainManager {
         //chainDefinition.addPathDefinition("/user/list","noSessionCreation,authcToken");
         //chainDefinition.addPathDefinition("/user/view","noSessionCreation,authcToken");
 
-        chainDefinition.addPathDefinition("/**", "noSessionCreation,authcToken");
+        chainDefinition.addPathDefinition("/**", "authcToken");
         return chainDefinition;
     }
 }
