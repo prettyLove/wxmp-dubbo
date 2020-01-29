@@ -90,7 +90,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
                     }
                 }
                 // Token认证失败直接返回Response信息
-                this.response401(response, msg);
+                this.response403(response, msg);
 
                 return false;
             }
@@ -105,7 +105,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
             // mustLoginFlag = true 开启任何请求必须登录才可访问
             Boolean mustLoginFlag = false;
             if (mustLoginFlag) {
-                this.response401(response, "请先登录");
+                this.response403(response, "请先登录");
                 return false;
             }
         }
@@ -254,7 +254,7 @@ public class JwtAuthFilter extends BasicHttpAuthenticationFilter {
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");
         try (PrintWriter out = httpServletResponse.getWriter()) {
-            String data = JsonConvertUtil.objectToJson(ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):" + msg, null));
+            String data = JsonConvertUtil.objectToJson(ResponseResult.failResponse(HttpStatus.FORBIDDEN.value(), "无权访问" + msg, null));
             out.append(data);
         } catch (IOException e) {
             logger.error("直接返回Response信息出现IOException异常:" + e.getMessage());

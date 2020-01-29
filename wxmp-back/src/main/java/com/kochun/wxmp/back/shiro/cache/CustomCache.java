@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,8 +65,9 @@ public class CustomCache<K, V> implements Cache<K, V> {
     @Override
     public Object put(Object key, Object value) throws CacheException {
         // 读取配置文件，获取Redis的Shiro缓存过期时间
-        PropertiesUtil.readProperties("config.properties");
-        String shiroCacheExpireTime = PropertiesUtil.getProperty("shiroCacheExpireTime");
+        //PropertiesUtil.readProperties("config.properties");
+        //String shiroCacheExpireTime = PropertiesUtil.getProperty("shiroCacheExpireTime");
+        String shiroCacheExpireTime = JwtUtil.accessTokenExpireTime;
         log.info("cache time "+ shiroCacheExpireTime);
         // 设置Redis的Shiro缓存
         try {

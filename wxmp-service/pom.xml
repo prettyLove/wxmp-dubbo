@@ -45,11 +45,6 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.projectlombok</groupId>-->
-        <!--<artifactId>lombok</artifactId>-->
-        <!--<optional>true</optional>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -58,13 +53,11 @@
 
 
         <!-- Dubbo Registry-->
-
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-spring-boot-starter</artifactId>
             <version>${dubbo.version}</version>
         </dependency>
-
         <!--zookeeper服务注册中心-->
         <dependency>
             <groupId>org.apache.dubbo</groupId>
@@ -78,8 +71,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-
 
         <!--阿里巴巴nacos注册服务中心，目前不支持dubbo-admin-->
         <!--<dependency>-->
@@ -116,17 +107,6 @@
             <version>2.3.28</version>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>com.google.code.gson</groupId>-->
-        <!--<artifactId>gson</artifactId>-->
-        <!--<version>2.8.5</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-        <!--<groupId>com.alibaba</groupId>-->
-        <!--<artifactId>fastjson</artifactId>-->
-        <!--<version>1.2.54</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>mysql</groupId>
@@ -144,29 +124,9 @@
         <dependency>
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-mp</artifactId>
-            <version>3.4.0</version>
+            <version>3.6.0</version>
         </dependency>
 
-        <!--swagger2  API文档生成器-->
-        <!--<dependency>-->
-        <!--<groupId>io.springfox</groupId>-->
-        <!--<artifactId>springfox-swagger2</artifactId>-->
-        <!--<version>2.9.2</version>-->
-        <!--</dependency>-->
-        <!--&lt;!&ndash; swagger-ui &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>io.springfox</groupId>-->
-        <!--<artifactId>springfox-swagger-ui</artifactId>-->
-        <!--<version>2.9.2</version>-->
-        <!--</dependency>-->
-
-
-        <!-- Shiro -->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.shiro</groupId>-->
-        <!--<artifactId>shiro-spring</artifactId>-->
-        <!--<version>${shiro-spring.version}</version>-->
-        <!--</dependency>-->
 
         <!-- JWT -->
         <dependency>
@@ -175,12 +135,6 @@
             <version>${jwt.version}</version>
         </dependency>
 
-        <!-- Redis-Jedis -->
-        <!--<dependency>-->
-        <!--<groupId>redis.clients</groupId>-->
-        <!--<artifactId>jedis</artifactId>-->
-        <!--<version>${jedis.version}</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>

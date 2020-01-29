@@ -134,15 +134,14 @@ public class LoginController {
     @GetMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         System.out.println("用户退出=========");
-        //String token =request.getHeader("Authorization");
         Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipals() != null) {
             String token = (String) subject.getPrincipals().getPrimaryPrincipal();
             //// TODO: 2019/8/29  是否将用户信息存到redis中，目前没有
             SystemUser user = (SystemUser) redisService.get(token);
             systemUserService.deleteLoginInfo(user.getName());
+            redisService.del(token);
         }
-        //redisService.del(token);
         SecurityUtils.getSubject().logout();
         ResponseResult responseResult = ResponseResult.successResponse();
         return new ResponseEntity<>(responseResult, HttpStatus.OK);

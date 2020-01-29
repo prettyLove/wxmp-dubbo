@@ -13,7 +13,7 @@
 
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
-
+    <!--只配置在shiro逻辑中用到的RPC类-->
     <dubbo:reference id="systemUserService" interface="com.kochun.wxmp.core.service.SystemUserService" check="false" version="1.0.0" timeout="6000"/>
     <dubbo:reference id="systemRoleService" interface="com.kochun.wxmp.core.service.SystemRoleService" check="false" version="1.0.0" timeout="6000"/>
     <dubbo:reference id="redisService" interface="com.kochun.wxmp.core.service.common.RedisService" check="false" version="1.0.0" timeout="6000"/>

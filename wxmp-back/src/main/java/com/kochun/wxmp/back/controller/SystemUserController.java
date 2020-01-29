@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 
 /**
@@ -48,7 +49,7 @@ import java.time.LocalDateTime;
  */
 @RestController
 @RequestMapping("/sysUser")
-public class SysUserController {
+public class SystemUserController {
 
     @Reference(version = "1.0.0")
     private SystemUserService systemUserService;
@@ -139,6 +140,16 @@ public class SysUserController {
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{id}")
+    @RequiresPermissions("user:delete")
+    public ResponseEntity<?> delete(@PathVariable("id") Integer id){
+        ResponseResult responseResult;
+        responseResult = ResponseResult.successResponse(localeMessage.getMessage("SUCCESS"));
+        SystemUser systemUser= systemUserService.getById(id);
+        systemUser.setIsDeleted(true);
+        responseResult.setData(systemUserService.updateById(systemUser));
+        return new ResponseEntity<>(responseResult, HttpStatus.OK);
+    }
 
     @GetMapping("/getUserByToken")
     public ResponseEntity<?> getUserByToken(HttpServletResponse response) {

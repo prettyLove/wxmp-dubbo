@@ -35,7 +35,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ShiroException.class)
     public ResponseResult handle401(ShiroException e) {
-        return ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):" + e.getMessage());
+        return ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(ShiroException):" + e.getMessage());
     }
 
     /**
@@ -59,7 +59,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthenticatedException.class)
     public ResponseResult handle401(UnauthenticatedException e) {
-        return ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):当前Subject是匿名Subject，请先登录(This subject is anonymous.)");
+        return ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(UnauthenticatedException):当前Subject是匿名Subject，请先登录(This subject is anonymous.)");
     }
 
     /**
@@ -69,7 +69,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(CustomUnauthorizedException.class)
     public ResponseResult handle401(CustomUnauthorizedException e) {
-        return ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):" + e.getMessage());
+        return ResponseResult.failResponse(HttpStatus.UNAUTHORIZED.value(), "无权访问(CustomUnauthorizedException):" + e.getMessage());
     }
 
     /**
